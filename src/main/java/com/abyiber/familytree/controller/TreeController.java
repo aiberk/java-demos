@@ -35,5 +35,9 @@ public class TreeController {
         return ResponseEntity.ok(ancestors);
     }
 
-    // Add other endpoints as needed
+    @GetMapping("/familyTree")
+    public ResponseEntity<List<String>> getFamilyTree(@RequestParam(name = "name") String name) {
+        List<String> familyTree = treeService.getFamilyTree(name);
+        return ResponseEntity.ok(familyTree);
+    }
 }

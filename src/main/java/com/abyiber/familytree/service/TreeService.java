@@ -85,4 +85,12 @@ public class TreeService {
         list.add(line.toString());
     }
 
+    public List<String> getFamilyTree(String name) {
+        List<String> familyTree = new ArrayList<>();
+        familyTree.addAll(getAncestors(name));
+        familyTree.add(""); // Add an empty line for separation
+        familyTree.addAll(getDescendants(name));
+        return familyTree;
+    }
+
 }
