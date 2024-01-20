@@ -37,4 +37,8 @@ public class PersonForm {
         return fatherName;
     }
 
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
+
 }
