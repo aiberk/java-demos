@@ -16,9 +16,14 @@ public class TreeController {
     @Autowired
     private TreeService treeService;
 
-    @PostMapping("/addPerson")
+    @PostMapping(path = "/addPerson", consumes = { "multipart/form-data" })
     public String addPerson(@ModelAttribute PersonForm personForm) {
+        System.out.println("Received Name: " + personForm.getName());
+        System.out.println("Received Mother's Name: " + personForm.getMotherName());
+        System.out.println("Received Father's Name: " + personForm.getFatherName());
+
         treeService.addPerson(personForm.getName(), personForm.getMotherName(), personForm.getFatherName());
+
         return "redirect:/"; // Redirect to the homepage
     }
 
