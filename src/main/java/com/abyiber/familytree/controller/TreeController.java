@@ -1,5 +1,6 @@
 package com.abyiber.familytree.controller;
 
+import com.abyiber.familytree.dto.PersonForm;
 import com.abyiber.familytree.service.TreeService;
 
 import java.util.List;
@@ -16,11 +17,9 @@ public class TreeController {
     private TreeService treeService;
 
     @PostMapping("/addPerson")
-    public String addPerson(@RequestParam(name = "name") String name,
-            @RequestParam(name = "motherName", required = false) String motherName,
-            @RequestParam(name = "fatherName", required = false) String fatherName) {
-        treeService.addPerson(name, motherName, fatherName);
-        return "Person added successfully";
+    public String addPerson(@ModelAttribute PersonForm personForm) {
+        treeService.addPerson(personForm.getName(), personForm.getMotherName(), personForm.getFatherName());
+        return "redirect:/"; // Redirect to the homepage
     }
 
     @GetMapping("/descendants")
