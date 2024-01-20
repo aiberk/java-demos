@@ -1,10 +1,11 @@
 function App() {
   const [familyTree, setFamilyTree] = React.useState([]);
   const [error, setError] = React.useState(null);
+  const [personName, setPersonName] = React.useState("");
 
   // Function to update the family tree
-  const updateFamilyTree = () => {
-    fetch("/tree/familyTree?name=test") // Adjust the query parameter as needed
+  const updateFamilyTree = (name) => {
+    fetch(`/tree/familyTree?name=${name}`) // Adjust the query parameter as needed
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -21,19 +22,41 @@ function App() {
       });
   };
 
+  // Function to handle submitting the person selection form
+  const handleSelectPerson = (e) => {
+    e.preventDefault();
+    updateFamilyTree(personName);
+  };
+
   // Initial fetch of family tree
   React.useEffect(() => {
-    updateFamilyTree();
+    updateFamilyTree("test");
   }, []);
 
   return (
     <div>
-      <FamilyTreeForm updateTree={updateFamilyTree} />
+      <FamilyTreeForm updateTree={() => updateFamilyTree(personName)} />
+      <form onSubmit={handleSelectPerson}>
+        <label>
+          Person Name:
+          <input
+            type="text"
+            value={personName}
+            onChange={(e) => setPersonName(e.target.value)}
+          />
+        </label>
+        <button type="submit">Show Family Tree</button>
+      </form>
       <FamilyTree familyTree={familyTree} error={error} />
     </div>
   );
 }
 
+/**
+ * Fucntion to add a person to the family tree
+ * @param {*} param0
+ * @returns
+ */
 function FamilyTreeForm({ updateTree }) {
   const [name, setName] = React.useState("");
   const [motherName, setMotherName] = React.useState("");
