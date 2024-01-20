@@ -12,6 +12,7 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        console.log("response", data);
         setFamilyTree(data);
       })
       .catch((error) => {
@@ -45,6 +46,11 @@ function FamilyTreeForm({ updateTree }) {
     formData.append("name", name);
     formData.append("motherName", motherName);
     formData.append("fatherName", fatherName);
+    console.log("Submitting:", { name, motherName, fatherName });
+
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
 
     fetch("/tree/addPerson", {
       method: "POST",
