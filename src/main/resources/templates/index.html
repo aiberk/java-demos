@@ -2,25 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Family Tree</title>
+    <!-- React JS -->
+    <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
     <!-- Include CSS files here -->
   </head>
   <body>
     <h1>Welcome to the Family Tree App</h1>
-    <h2>New Family Tree</h2>
-    <p th:text="${message}"></p>
-    <form
-      style="display: flex; flex-direction: column; width: 50%; gap: 0.2rem"
-      action="#"
-      th:action="@{/addPerson}"
-      th:object="${personForm}"
-      method="post">
-      <label for="name">Name:</label>
-      <input type="text" th:field="*{name}" />
-      <label for="motherName">Mother Name:</label>
-      <input type="text" th:field="*{motherName}" />
-      <label for="fatherName">Father Name:</label>
-      <input type="text" th:field="*{fatherName}" />
-      <input type="submit" value="Submit" />
-    </form>
+    <div id="react-root"></div>
+
+    <script type="text/babel" src="/familyTreeApp.js"></script>
   </body>
 </html>
