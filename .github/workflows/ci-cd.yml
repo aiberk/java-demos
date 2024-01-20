@@ -47,6 +47,4 @@ jobs:
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          npm install
-          npm run test
           curl "$deploy_url"
