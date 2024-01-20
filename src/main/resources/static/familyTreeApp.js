@@ -44,8 +44,9 @@ function FamilyTreeForm({ updateTree }) {
 
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("motherName", motherName);
     formData.append("fatherName", fatherName);
+    formData.append("motherName", motherName);
+
     console.log("Submitting:", { name, motherName, fatherName });
 
     for (let pair of formData.entries()) {
