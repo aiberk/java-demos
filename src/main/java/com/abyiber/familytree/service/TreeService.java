@@ -32,15 +32,18 @@ public class TreeService {
         return descendants;
     }
 
+    // public List<String> getAncestors(String name) {
+    // TreeNode<Person> node = familyTree.findPersonNode(name);
+    // if (node == null) {
+    // return List.of("Person not found in the tree.");
+    // }
+    // List<String> ancestors = new ArrayList<>();
+    // ancestors.add("Ancestors of " + name + ":");
+    // printAncestorsRecursive(node, 0, ancestors);
+    // return ancestors;
+    // }
     public List<String> getAncestors(String name) {
-        TreeNode<Person> node = familyTree.findPersonNode(name);
-        if (node == null) {
-            return List.of("Person not found in the tree.");
-        }
-        List<String> ancestors = new ArrayList<>();
-        ancestors.add("Ancestors of " + name + ":");
-        printAncestorsRecursive(node, 0, ancestors);
-        return ancestors;
+        return familyTree.getAncestors(name);
     }
 
     // Methods for recursive printing (similar to those in Tree class)
@@ -64,26 +67,27 @@ public class TreeService {
         }
     }
 
-    private void printAncestorsRecursive(TreeNode<Person> node, int level, List<String> list) {
-        if (node == null) {
-            return;
-        }
+    // private void printAncestorsRecursive(TreeNode<Person> node, int level,
+    // List<String> list) {
+    // if (node == null) {
+    // return;
+    // }
 
-        // Recurse for mother
-        if (node.getMother() != null) {
-            printAncestorsRecursive(node.getMother(), level + 1, list);
-        }
+    // StringBuilder line = new StringBuilder();
+    // indent(line, level);
+    // line.append(node.getData().getName());
+    // list.add(line.toString());
 
-        // Recurse for father
-        if (node.getFather() != null) {
-            printAncestorsRecursive(node.getFather(), level + 1, list);
-        }
+    // // Recurse for mother
+    // if (node.getMother() != null) {
+    // printAncestorsRecursive(node.getMother(), level + 1, list);
+    // }
 
-        StringBuilder line = new StringBuilder();
-        indent(line, level);
-        line.append(node.getData().getName());
-        list.add(line.toString());
-    }
+    // // Recurse for father
+    // if (node.getFather() != null) {
+    // printAncestorsRecursive(node.getFather(), level + 1, list);
+    // }
+    // }
 
     public List<String> getFamilyTree(String name) {
         List<String> familyTree = new ArrayList<>();
