@@ -1,7 +1,5 @@
 package com.abyiber.familytree.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,7 @@ public class WebController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("personForm", new PersonForm());
-        model.addAttribute("message", "Hello World!");
+
         return "index";
     }
 

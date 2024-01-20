@@ -1,5 +1,8 @@
 package com.abyiber.familytree.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a family tree where each person is a node in the tree.
  * The tree stores relationships between people, including parents and children.
@@ -143,46 +146,86 @@ public class Tree<T> {
         }
     }
 
-    /**
-     * Prints the ancestors of the person with the given name.
-     * The method prints the person's name followed by their ancestors, each
-     * indented.
-     *
-     * @param name The name of the person whose ancestors are to be printed.
-     */
-    public void printAncestors(String name) {
+    // /**
+    // * Prints the ancestors of the person with the given name.
+    // * The method prints the person's name followed by their ancestors, each
+    // * indented.
+    // *
+    // * @param name The name of the person whose ancestors are to be printed.
+    // */
+    // public void printAncestors(String name) {
+    // TreeNode<Person> node = findPersonNode(name);
+    // if (node == null) {
+    // System.out.println("Person not found in the tree.");
+    // return;
+    // }
+    // System.out.println("Ancestors:");
+    // printIndentation(1);
+    // System.out.println(name);
+    // printAncestorsRecursive(node, 2);
+    // }
+
+    // /**
+    // * Recursively prints the ancestors of a given node, with indentation based on
+    // * their level in the tree.
+    // *
+    // * @param node The TreeNode from which to start printing ancestors.
+    // * @param depth The current depth of indentation.
+    // */
+    // private void printAncestorsRecursive(TreeNode<Person> node, int depth) {
+    // if (node == null || (node.getMother() == null && node.getFather() == null))
+    // return;
+    // int nextDepth = depth + 1;
+
+    // if (node.getMother() != null) {
+    // printIndentation(nextDepth);
+    // System.out.println(node.getMother().getData().getName());
+    // printAncestorsRecursive(node.getMother(), nextDepth);
+    // }
+    // if (node.getFather() != null) {
+    // printIndentation(nextDepth);
+    // System.out.println(node.getFather().getData().getName());
+    // printAncestorsRecursive(node.getFather(), nextDepth);
+    // }
+    // }
+
+    public List<String> getAncestors(String name) {
         TreeNode<Person> node = findPersonNode(name);
         if (node == null) {
-            System.out.println("Person not found in the tree.");
-            return;
+            return List.of("Person not found in the tree.");
         }
-        System.out.println("Ancestors:");
-        printIndentation(1);
-        System.out.println(name);
-        printAncestorsRecursive(node, 2);
+        List<String> ancestors = new ArrayList<>();
+        ancestors.add("Ancestors of " + name + ":");
+        printAncestorsRecursive(node, 0, ancestors);
+        return ancestors;
     }
 
-    /**
-     * Recursively prints the ancestors of a given node, with indentation based on
-     * their level in the tree.
-     *
-     * @param node  The TreeNode from which to start printing ancestors.
-     * @param depth The current depth of indentation.
-     */
-    private void printAncestorsRecursive(TreeNode<Person> node, int depth) {
-        if (node == null || (node.getMother() == null && node.getFather() == null))
+    private void printAncestorsRecursive(TreeNode<Person> node, int depth, List<String> list) {
+        if (node == null || (node.getMother() == null && node.getFather() == null)) {
             return;
+        }
         int nextDepth = depth + 1;
 
-        if (node.getMother() != null) {
-            printIndentation(nextDepth);
-            System.out.println(node.getMother().getData().getName());
-            printAncestorsRecursive(node.getMother(), nextDepth);
-        }
         if (node.getFather() != null) {
-            printIndentation(nextDepth);
-            System.out.println(node.getFather().getData().getName());
-            printAncestorsRecursive(node.getFather(), nextDepth);
+            printAncestorsRecursive(node.getFather(), nextDepth, list);
+            StringBuilder line = new StringBuilder();
+            indent(line, depth);
+            line.append(node.getFather().getData().getName());
+            list.add(line.toString());
+        }
+
+        if (node.getMother() != null) {
+            printAncestorsRecursive(node.getMother(), nextDepth, list);
+            StringBuilder line = new StringBuilder();
+            indent(line, depth);
+            line.append(node.getMother().getData().getName());
+            list.add(line.toString());
+        }
+    }
+
+    private void indent(StringBuilder sb, int level) {
+        for (int i = 0; i < level; i++) {
+            sb.append("    "); // 4 spaces per level of indentation
         }
     }
 
