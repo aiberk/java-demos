@@ -2,7 +2,79 @@ function App() {
   const [familyTree, setFamilyTree] = React.useState([]);
   const [error, setError] = React.useState(null);
   const [personName, setPersonName] = React.useState("");
-
+  const [usingExampleData, setUsingExampleData] = React.useState(false);
+  const exampleData = [
+    {
+      name: "Arthur",
+      motherName: "Elizabeth of York",
+      fatherName: "Henry VII",
+    },
+    {
+      name: "Henry VIII",
+      motherName: "Elizabeth of York",
+      fatherName: "Henry VII",
+    },
+    {
+      name: "Margaret",
+      motherName: "Elizabeth of York",
+      fatherName: "Henry VII",
+    },
+    {
+      name: "Mary",
+      motherName: "Elizabeth of York",
+      fatherName: "Henry VII",
+    },
+    {
+      name: "Mary I",
+      motherName: "Catherine of Aragon",
+      fatherName: "Henry VIII",
+    },
+    {
+      name: "Elizabeth I",
+      motherName: "Anne Boleyn",
+      fatherName: "Henry VIII",
+    },
+    {
+      name: "Edward VI",
+      motherName: "Jane Seymour",
+      fatherName: "Henry VIII",
+    },
+    {
+      name: "James V",
+      motherName: "Margaret",
+      fatherName: "James IV",
+    },
+    {
+      name: "Mary, Queen of Scots",
+      motherName: "Mary of Guise",
+      fatherName: "James V",
+    },
+    {
+      name: "James VI & I",
+      motherName: "Mary, Queen of Scots",
+      fatherName: "Henry, Lord Darnley",
+    },
+    {
+      name: "Frances",
+      motherName: "Mary",
+      fatherName: "Charles Brandon",
+    },
+    {
+      name: "Lady Jane Grey",
+      motherName: "Frances",
+      fatherName: "Henry Grey",
+    },
+    {
+      name: "Henry, Lord Darnley",
+      motherName: "Margaret Stuart",
+      fatherName: "unknown",
+    },
+    {
+      name: "Margaret Stuart",
+      motherName: "Margaret",
+      fatherName: "unknown",
+    },
+  ];
   // Function to update the family tree
   const updateFamilyTree = (name) => {
     fetch(`/tree/familyTree?name=${name}`) // Adjust the query parameter as needed
@@ -22,6 +94,23 @@ function App() {
       });
   };
 
+  const handleUseExampleData = async (e) => {
+    e.preventDefault();
+    setUsingExampleData(true);
+    for (const person of exampleData) {
+      const formData = new FormData();
+      formData.append("name", person.name);
+      formData.append("motherName", person.motherName);
+      formData.append("fatherName", person.fatherName);
+
+      await fetch("/tree/addPerson", {
+        method: "POST",
+        body: formData,
+      });
+    }
+    updateTree(); // Update the family tree after adding all persons
+  };
+
   // Function to handle submitting the person selection form
   const handleSelectPerson = (e) => {
     e.preventDefault();
@@ -29,13 +118,22 @@ function App() {
   };
 
   // Initial fetch of family tree
-  React.useEffect(() => {
-    updateFamilyTree("test");
-  }, []);
+  // React.useEffect(() => {
+  //   updateFamilyTree("Arthur");
+  // }, []);
 
   return (
     <div>
-      <FamilyTreeForm updateTree={() => updateFamilyTree(personName)} />
+      {!usingExampleData && (
+        <div>
+          <button onClick={handleUseExampleData}>Use Example Data</button>
+          <FamilyTreeForm updateTree={updateFamilyTree} />{" "}
+        </div>
+      )}
+      {usingExampleData && (
+        <h4>Try searching for Arthur, Henry VIII, or Margaret</h4>
+      )}
+
       <form onSubmit={handleSelectPerson}>
         <label>
           Person Name:
@@ -101,6 +199,7 @@ function FamilyTreeForm({ updateTree }) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h4>Or add family members</h4>
       <label>
         Name:
         <input
@@ -125,7 +224,9 @@ function FamilyTreeForm({ updateTree }) {
           onChange={(e) => setFatherName(e.target.value)}
         />
       </label>
-      <button type="submit">Add Person</button>
+      <button type="submit" style={{ marginRight: "1rem" }}>
+        Add Person
+      </button>
     </form>
   );
 }
